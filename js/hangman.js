@@ -1,6 +1,8 @@
+/*
 $(document).ready(function () {
     scoreBoard();
 });
+*/
 
 var userName = null;
 var userScore = null;
