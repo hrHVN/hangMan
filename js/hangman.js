@@ -1,81 +1,119 @@
-/*
-$(document).ready(function () {
-    scoreBoard();
-});
-*/
+import { restGetList } from './dictonary.js';
+import * as Graphical from './domManipulation.js';
 
-var userName = null;
-var userScore = null;
-var theWordToGuess = '';
-var secretWord = null;
+$(document).ready(function () {
+    Graphical.scoreBoard(ScoreList);
+    $('#StartNewGame').on('click', function () {
+        hangMeNot();
+    });
+    let test = domInterface.getGameDifficulty();
+    console.log(test);;
+});
+
+const domInterface = new Graphical.Populate();
+
+const ScoreList = [
+    // Dummy Data
+    {
+        name: 'The Impervious Player',
+        score: 1000000,
+        difficulty: 'Asian',
+        secret: 'a',
+        target: 'a',
+        hash: 'TheOneAndOnlyPlayerToHitAMillion'
+    },
+    {
+        name: 'Steven He',
+        score: 0,
+        difficulty:'Easy',
+        secret: 'Default Failure',
+        target: 'Send you to Jesus!',
+        hash: 'NeverGOnnaWinnThisGame'
+    }
+    // Dummy Data End
+];
+
+var theWordToGuess = null;
+var secretWord = '***e*E*Ee**';
 var difficulty = null;
 const guessedLetters = [];
 const succesLetters = [];
-
-let maxGuesses = parseInt(theWordToGuess.length * 1.5);
+// User choice for Dificulty settings
+const difficultyOptions = {
+    Asian: { pointMultiplier: 1000, maxGuesses: 1 },
+    Hard: { pointMultiplier: 200, ekstraGuesses: 5 },
+    Medium: { pointMultiplier: 15, ekstrGuesses: 10 },
+    Easy: { pointMultiplier: 1, ekstraGuesses: 20 }
+};
+var maxGuesses = null;
 
 function hangMeNot() {
-    
-    try {
-        selectAWord()
-    } catch (e) {
-        selectAWord()
-    }
     // Game Loop
-
+    console.log('Clicked')
+    difficulty = prompt('Please Choose a dificulty Level: \nAsian, Hard, Medium, Easy');
+    if (difficulty.toLowerCase == 'asian') {
+        maxGuesses = 1;
+    }
     /* Ask for input 
         - subtract number of guesses left
         - add the input to input history
     */
-    yourGuesses.push(prompt('Will he hang, or can you avodi it? \nSay a letter between a-å: '));
-    maxGuesses--;
-    console.log(maxGuesses);
+
+    let temp = restGetList('abs');
     /* Compare input with solution
     if not equal -> 
         - update progress towards the hanging 
     if equal -> 
         - update the palyerSucessWords
     */
-    if (theWord.toLowerCase().includes(yourGuesses[yourGuesses.length - 1])) {
-        console.log(yourGuesses[yourGuesses.length - 1])
-
-        palyerSucessWords.push(yourGuesses[yourGuesses.length - 1]);
-    }
-    else {
-        alert(`To the gallows! \n"${yourGuesses[yourGuesses.length - 1]}" is not part of the word `)
-    }
-
-
 
     //Game end
-    if (!maxGuesses || secretword === theWordToGuess) {
-        gameEnd();
-    }
-    $('#theGuessedWord').html(unlocked);
-
+    gameEnd();
 };
 
 function gameEnd() {
-    console.log('Game Over!')
+    // Display Gameover
+    domInterface.progress('#ConsoleLog', 'Game Over!!');
+    // ask for NickName
+    const NickName = prompt('Nick name: ');
+    // display Score and placement
+    const score = () => {
+        const regex = /\*/g;
+        const x = secretWord.length - (secretWord.split(regex).length - 1);
+        const multiplier = difficultyOptions[difficulty]['pointMultiplier'] && 1;
 
-    scoreBoard();
-    
+        return (x * (maxGuesses && 1)) * multiplier;
+    }
+
+    // Needs to be improved to a real hash algoritm
+    const uniqueHAsh = () => {
+        return `pl4y3r-s747ts-74rg37${theWordToGuess}-5c0r3${sum}`;
+    }
+
+    // add to dataBase
+    const player = {
+        name: NickName,
+        score: score(),
+        difficulty: difficulty,
+        secret: secretWord,
+        target: theWordToGuess,
+        hash: uniqueHAsh()
+    }
+    ScoreList.push(player);
+    ScoreList.sort((a, b) => a.score - b.score);
+
+    // update the palyer scoreboard
+    domInterface.setPlaceMent(player, ScoreList.indexOf(player));
 }
 
-// update the palyer scoreboard
-function scoreBoard() {
-    $('#scoreBoardTable tbody').html('This is a message from the JS');
-    console.log(`usr: ${userName} score: ${getScore()} word:${theWordToGuess} progress: ${secretWord}`);
-};
-
-function retunProgress () {
+function retunProgress() {
     /* Display the current status
             - Display the guessed letters
             - display the word whit unlocked letters
             - display the gallow progress
        */
     // Guessed Letters
-   
+
     // Unlocked Word
     const tempWord = []
     let unlocked = '';
@@ -96,7 +134,7 @@ function retunProgress () {
 }
 
 function selectAWord() {
-    const list = ['a','b','c'];
+    const list = ['a', 'b', 'c'];
 
     theWordToGuess = list[Math.round(Math.random() * (list.length))];
 }
