@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- CSS -->
+    <!-- CSS -->
     <!-- <link rel="stylesheet" href="/Noroff/bootstrap-5.0.2-dist/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="/bootstrap-5.0.2-dist/css/bootstrap.min.css">
 
     <title>Hang Me Not</title>
 </head>
+
 <body>
     <main class="container-md">
         <div class="mb-3 text-center">
@@ -19,36 +21,61 @@
         </div>
         <div class="row mb-3">
             <div class="container-sm col-6" id="gameWindow">
-                <p id="theGuessedWord">the word: </p>
-                <button class="btn-lg btn-success my-5 mx-5" onclick="hangMeNot()">Start the game</button>
 
-                <div class="col-2">
-                    <h6>Your guesses:</h6>
-                    <div id="yourGuesses" class="">
-                        <!-- <p class="btn btn-outline-primary">a</p>
-                        <p class="btn btn-outline-primary">b</p> -->
+                <p id="secretWordProgress">the word: </p>
+                <button id="StartNewGame" class="btn-lg btn-success my-5 mx-5">Start the game</button>
+
+                <div id="graphics">
+                    <div id="ConsoleLog">
+                        
                     </div>
                 </div>
+
+                <div class="col-3">
+                    <h6>Your guesses:</h6>
+                    <div id="yourGuesses" class="">
+                        <!-- <p class="btn btn-success">a</p>
+                        <p class="btn btn-outline-danger">b</p> -->
+                    </div>
+                </div>
+
             </div>
-            <div class="container-sm col-4" id="scoreBoardTable">
+
+            <div class="container-sm col" id="scoreBoardTable">
                 <h4>Score board</h4>
-                <table class="list-goup">
-                <thead>
-                
-                </thead>
-                <tbody>
-    
-                </tbody>
+                <hr>
+                <table class="table table-sm table-striped text-center">
+                    <thead>
+                        <tr>
+                            <th>Nr #</th>
+                            <th scope="col">Player ID</th>
+                            <th scope="col">Score (dificulty)</th>
+                            <th scope="col">Progression</th>
+                            <th scope="col">The word</th>
+                            <td class="visually-hidden">unique-Id</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                    <tfoot>
+                        
+                    </tfoot>
                 </table>
+                <hr>
             </div>
+
         </div>
     </main>
+
     <!-- JS -->
     <script src="/js/jquery-3.6.0.js"></script>
     <script src="/bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
 
-    <script src="/js/hangman.js"></script>
-    <script src="/js/dictonary.js"></script>
+    <script type="module" src="/js/hangman.js"></script>
+    <script type="module" src="/js/dictonary.js" ></script>
+    <script type="module" src="/js/domManipulation.js" ></script>
     <!-- End of JS -->
 </body>
+
 </html>
