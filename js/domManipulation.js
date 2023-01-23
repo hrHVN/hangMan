@@ -20,7 +20,8 @@ function scoreBoard(objectList) {
 }
 
 class Populate {
-    // Populate the <p>-tags (secretWord, guessed list, sucess list)
+    // Populate the <p>-tags (secretWord, guessed list, sucess list, default = html)
+    // needs rewriting for better generalpurpouse usage
     progress(caseType, data) {
         switch (caseType) {
             case 'secret':
@@ -45,6 +46,7 @@ class Populate {
     }
 
     // Draw the noose based on a numeric value
+    // draws the game console -> Might export to own class
     grapchics() { }
 
     // Display in the <tFoot> current score
@@ -59,8 +61,9 @@ class Populate {
         </tr>`);
     }
 
-    getGameDifficulty () {
+    getGameDifficulty() {
         let dom = new Populate();
+        let result = null;
         const form = '<label for="Asian">Asian</label>\
         <input type="checkbox" name="Asian" value="Asian">\
         <label for="Hard">Hard</label>\
@@ -70,10 +73,14 @@ class Populate {
         <label for="Easy">Easy</label>\
         <input type="checkbox" name="Easy" value="Easy">';
 
-        dom.progress('#ConsoleLog',form)
-        return $('#ConsoleLog input').select(function() {
-            $(this).html();
-        });
+        dom.progress('#ConsoleLog', form)
+
+        // $('#ConsoleLog input').on('click', function () {
+        //     $('#ConsoleLog input').not(this).prop('checked', false);
+        //     result = $('input:checked').val();
+        // });
+
+        // return result;
     }
 }
 
