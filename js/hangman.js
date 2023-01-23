@@ -3,11 +3,19 @@ import * as Graphical from './domManipulation.js';
 
 $(document).ready(function () {
     Graphical.scoreBoard(ScoreList);
+    
     $('#StartNewGame').on('click', function () {
         hangMeNot();
     });
-    let test = domInterface.getGameDifficulty();
-    console.log(test);;
+
+    $('#ConsoleLog input').on('click',function () {
+        $('#ConsoleLog input').not(this).prop('checked', false);
+        difficulty = $('input:checked').val();
+    });
+
+    // $('input:checkbox').change(function (e) { 
+    //     e.preventDefault();
+    // });
 });
 
 const domInterface = new Graphical.Populate();
@@ -34,8 +42,8 @@ const ScoreList = [
 ];
 
 var theWordToGuess = null;
-var secretWord = '***e*E*Ee**';
-var difficulty = null;
+var secretWord = null;
+var difficulty = '';
 const guessedLetters = [];
 const succesLetters = [];
 // User choice for Dificulty settings
@@ -47,13 +55,20 @@ const difficultyOptions = {
 };
 var maxGuesses = null;
 
-function hangMeNot() {
+async function hangMeNot() {
     // Game Loop
-    console.log('Clicked')
-    difficulty = prompt('Please Choose a dificulty Level: \nAsian, Hard, Medium, Easy');
-    if (difficulty.toLowerCase == 'asian') {
-        maxGuesses = 1;
+    const timout = async ms => new Promise(res => setTimeout(res, ms));
+
+    domInterface.getGameDifficulty();
+    
+    if (difficulty === '') {
+        while (difficulty === '') await timout(difficulty,100);
+        domInterface.progress('#ConsoleLog', `New Game: ${difficulty}`)
+    } else {
+        domInterface.progress('#ConsoleLog', `New Game: ${difficulty}`)
+        console.log(difficulty);
     }
+
     /* Ask for input 
         - subtract number of guesses left
         - add the input to input history
@@ -68,7 +83,7 @@ function hangMeNot() {
     */
 
     //Game end
-    gameEnd();
+    // gameEnd();
 };
 
 function gameEnd() {
